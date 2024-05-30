@@ -3,6 +3,7 @@ from packaging.version import Version, parse
 import requests
 import sys
 from typing import List
+from security import safe_requests
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
 
 def _package_metadata(package_name: str, github_token: str) -> requests.Response:
     url = f"https://api.github.com/orgs/dbt-labs/packages/container/{package_name}/versions"
-    return requests.get(url, auth=("", github_token))
+    return safe_requests.get(url, auth=("", github_token))
 
 
 def _published_versions(response: requests.Response) -> List[Version]:

@@ -17,6 +17,7 @@ from dbt_common.utils.connection import connection_exception_retry
 from dbt import deprecations
 from dbt_common import semver
 import os
+from security import safe_requests
 
 if os.getenv("DBT_PACKAGE_HUB_URL"):
     DEFAULT_REGISTRY_BASE_URL = os.getenv("DBT_PACKAGE_HUB_URL")
@@ -41,7 +42,7 @@ def _get(package_name, registry_base_url=None):
     url = _get_url(package_name, registry_base_url)
     fire_event(RegistryProgressGETRequest(url=url))
     # all exceptions from requests get caught in the retry logic so no need to wrap this here
-    resp = requests.get(url, timeout=30)
+    resp = safe_requests.get(url, timeout=30)
     fire_event(RegistryProgressGETResponse(url=url, resp_code=resp.status_code))
     resp.raise_for_status()
 
@@ -163,7 +164,7 @@ def _get_index(registry_base_url=None):
     url = _get_url("index", registry_base_url)
     fire_event(RegistryIndexProgressGETRequest(url=url))
     # all exceptions from requests get caught in the retry logic so no need to wrap this here
-    resp = requests.get(url, timeout=30)
+    resp = safe_requests.get(url, timeout=30)
     fire_event(RegistryIndexProgressGETResponse(url=url, resp_code=resp.status_code))
     resp.raise_for_status()
 
