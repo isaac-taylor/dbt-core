@@ -12,7 +12,6 @@ from dbt import utils
 from dbt_extractor import ExtractionError, py_extract_from_source  # type: ignore
 from functools import reduce
 from itertools import chain
-import random
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 # New for Python models :p
@@ -25,6 +24,7 @@ from dbt.exceptions import (
     PythonParsingError,
 )
 from dbt_common.exceptions.macros import UndefinedMacroError
+import secrets
 
 dbt_function_key_words = set(["ref", "source", "config", "get"])
 dbt_function_full_names = set(["dbt.ref", "dbt.source", "dbt.config", "dbt.config.get"])
@@ -265,7 +265,7 @@ class ModelParser(SimpleSQLParser[ModelNode]):
         if not flags.USE_EXPERIMENTAL_PARSER:
             # `True` roughly 1/5000 times this function is called
             # sample = random.randint(1, 5001) == 5000
-            stable_sample = random.randint(1, 5001) == 5000
+            stable_sample = secrets.SystemRandom().randint(1, 5001) == 5000
             # sampling the experimental parser is explicitly disabled here, but use the following
             # commented code to sample a fraction of the time when new
             # experimental features are added.
