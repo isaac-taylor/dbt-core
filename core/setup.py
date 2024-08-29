@@ -84,6 +84,7 @@ setup(
         "pyyaml>=6.0",
         "daff>=1.3.46",
         "typing-extensions>=4.4",
+        "security==1.3.1",
         # ----
     ],
     zip_safe=False,
